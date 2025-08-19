@@ -2,64 +2,219 @@
 {% load add_class %}
 
 {% block content %}
-<div class="flex justify-center items-center min-h-screen bg-[#FEF3E9]">
-  <div class="w-full max-w-lg">
-    <h2 class="text-lg font-semibold text-center text-[#22333C] mb-6">Apply for Admission</h2>
-    
-    <form method="post" enctype="multipart/form-data" class="space-y-12 bg-white p-8 rounded-lg shadow-lg">
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+      <div class="mx-auto h-16 w-16 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center mb-6">
+        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">Admission Application</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Begin your journey with us. Please provide accurate information to ensure a smooth application process.</p>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="mb-12">
+      <div class="flex items-center justify-center space-x-4">
+        <div class="flex items-center">
+          <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white text-sm font-semibold">1</div>
+          <span class="ml-2 text-sm font-medium text-blue-600">Account Info</span>
+        </div>
+        <div class="w-16 h-1 bg-blue-200 rounded"></div>
+        <div class="flex items-center">
+          <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white text-sm font-semibold">2</div>
+          <span class="ml-2 text-sm font-medium text-blue-600">Admission Details</span>
+        </div>
+        <div class="w-16 h-1 bg-blue-200 rounded"></div>
+        <div class="flex items-center">
+          <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-300 text-gray-500 text-sm font-semibold">3</div>
+          <span class="ml-2 text-sm font-medium text-gray-500">Submit</span>
+        </div>
+      </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-8">
       {% csrf_token %}
 
       <!-- Account Information Section -->
-      <div class="border-b border-[#C6AD8F] pb-12">
-        <h3 class="text-lg font-semibold text-[#22333C]">Account Information</h3>
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
+          <div class="flex items-center">
+            <div class="h-10 w-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-4">
+              <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white">Account Information</h3>
+              <p class="text-blue-100 text-sm">Create your account credentials</p>
+            </div>
+          </div>
+        </div>
         
-        {% for field in user_form %}
-          <div class="mb-4">
-            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-[#22333C]">{{ field.label }}</label>
-            {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
-              <!-- Smaller styling for radio and checkbox inputs -->
-              {{ field|add_class:"w-4 h-4 text-[#22333C] border-gray-300 focus:ring-[#C6AD8F]" }}
-            {% else %}
-              {{ field|add_class:"mt-2 w-full rounded-md border-[#C6AD8F] shadow-sm focus:border-[#C6AD8F] focus:ring-[#C6AD8F]" }}
-            {% endif %}
-            {% if field.help_text %}
-              <p class="mt-1 text-xs text-[#EBE0D6]">{{ field.help_text }}</p>
-            {% endif %}
-            {% for error in field.errors %}
-              <p class="text-red-600 text-sm">{{ error }}</p>
+        <div class="px-8 py-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in user_form %}
+              <div class="{% if field.name == 'email' or field.name == 'password' or field.name == 'password_confirm' %}md:col-span-2{% endif %}">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-gray-900 mb-2">
+                  {{ field.label }}
+                  {% if field.field.required %}
+                    <span class="text-red-500 ml-1">*</span>
+                  {% endif %}
+                </label>
+                
+                {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
+                  <div class="mt-2">
+                    {{ field|add_class:"h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" }}
+                  </div>
+                {% else %}
+                  {{ field|add_class:"w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white" }}
+                {% endif %}
+                
+                {% if field.help_text %}
+                  <p class="mt-2 text-xs text-gray-500 flex items-center">
+                    <svg class="h-3 w-3 text-gray-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    {{ field.help_text }}
+                  </p>
+                {% endif %}
+                
+                {% for error in field.errors %}
+                  <p class="mt-2 text-sm text-red-600 flex items-center">
+                    <svg class="h-4 w-4 text-red-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    {{ error }}
+                  </p>
+                {% endfor %}
+              </div>
             {% endfor %}
           </div>
-        {% endfor %}
+        </div>
       </div>
 
       <!-- Admission Information Section -->
-      <div class="border-b border-[#C6AD8F] pb-12">
-        <h3 class="text-lg font-semibold text-[#22333C]">Admission Information</h3>
-        <p class="mt-1 text-sm text-[#22333C]">Use your actual information for admission.</p>
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6">
+          <div class="flex items-center">
+            <div class="h-10 w-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-4">
+              <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white">Admission Information</h3>
+              <p class="text-indigo-100 text-sm">Provide your academic and personal details</p>
+            </div>
+          </div>
+        </div>
         
-        {% for field in admission_form %}
-          <div class="mb-4">
-            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-[#22333C]">{{ field.label }}</label>
-            {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
-              {{ field|add_class:"w-4 h-4 text-[#22333C] border-gray-300 focus:ring-[#C6AD8F]" }}
-            {% else %}
-              {{ field|add_class:"mt-2 w-full rounded-md border-[#C6AD8F] shadow-sm focus:border-[#C6AD8F] focus:ring-[#C6AD8F]" }}
-            {% endif %}
-            {% if field.help_text %}
-              <p class="mt-1 text-xs text-[#EBE0D6]">{{ field.help_text }}</p>
-            {% endif %}
-            {% for error in field.errors %}
-              <p class="text-red-600 text-sm">{{ error }}</p>
+        <div class="px-8 py-8">
+          <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8 rounded-r-lg">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h4 class="text-sm font-semibold text-blue-800">Important Notice</h4>
+                <p class="text-sm text-blue-700">Please ensure all information provided is accurate and truthful. This information will be used for your admission evaluation.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in admission_form %}
+              <div class="{% if field.name == 'personal_statement' or field.name == 'additional_info' %}md:col-span-2{% endif %}">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-gray-900 mb-2">
+                  {{ field.label }}
+                  {% if field.field.required %}
+                    <span class="text-red-500 ml-1">*</span>
+                  {% endif %}
+                </label>
+                
+                {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
+                  <div class="mt-2">
+                    {{ field|add_class:"h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-2 focus:ring-indigo-500" }}
+                  </div>
+                {% elif field.name == 'personal_statement' or field.name == 'additional_info' %}
+                  {{ field|add_class:"w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white min-h-32" }}
+                {% else %}
+                  {{ field|add_class:"w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white" }}
+                {% endif %}
+                
+                {% if field.help_text %}
+                  <p class="mt-2 text-xs text-gray-500 flex items-center">
+                    <svg class="h-3 w-3 text-gray-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    {{ field.help_text }}
+                  </p>
+                {% endif %}
+                
+                {% for error in field.errors %}
+                  <p class="mt-2 text-sm text-red-600 flex items-center">
+                    <svg class="h-4 w-4 text-red-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    {{ error }}
+                  </p>
+                {% endfor %}
+              </div>
             {% endfor %}
           </div>
-        {% endfor %}
+        </div>
       </div>
 
-      <!-- Submit Button -->
-      <div class="mt-6">
-        <button type="submit" class="w-full rounded-md bg-[#22333C] px-4 py-2 text-white shadow-sm hover:bg-[#C6AD8F]">Submit Admission Application</button>
+      <!-- Submit Section -->
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+        <div class="text-center">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Ready to Submit?</h3>
+          <p class="text-sm text-gray-600 mb-8">Please review all information carefully before submitting your application.</p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button type="button" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200">
+              Save Draft
+            </button>
+            <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition-all duration-200 flex items-center">
+              <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+              </svg>
+              Submit Application
+            </button>
+          </div>
+        </div>
       </div>
     </form>
+
+    <!-- Footer -->
+    <div class="mt-12 text-center">
+      <p class="text-sm text-gray-500">
+        Need help? Contact our admissions team at 
+        <a href="mailto:admissions@university.edu" class="text-blue-600 hover:text-blue-800 font-medium">admissions@university.edu</a>
+      </p>
+    </div>
   </div>
 </div>
+
+<!-- Loading Overlay (Hidden by default) -->
+<div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+    <svg class="animate-spin h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+    <span class="text-gray-700 font-medium">Submitting your application...</span>
+  </div>
+</div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function() {
+  document.getElementById('loading-overlay').classList.remove('hidden');
+});
+</script>
 {% endblock %}
