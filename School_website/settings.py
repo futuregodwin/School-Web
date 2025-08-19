@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'School_website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'school-db',     
+        'NAME': 'postgres',     
         'USER': 'root',              
         'PASSWORD': 'Jaxo7wM8Pzl71RamAgM7',      
         'HOST': 'school-db.c14884o6sd2h.af-south-1.rds.amazonaws.com',           
