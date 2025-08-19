@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% load add_styles %}
+{% block content %}
+<div class="flex flex-col items-center min-h-screen bg-[#FEF3E9]">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-md p-6 mt-10">
+        <!-- Back Button -->
+        <button 
+            onclick="window.history.back()" 
+            class="flex items-center space-x-2 bg-[#C6AD8F] text-white px-4 py-2 rounded-lg hover:bg-[#C6AD8F]/90 focus:outline-none shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back</span>
+        </button>
+
+        <!-- Page Title -->
+        <h2 class="text-2xl font-bold text-center mb-6 text-[#22333C]">Create Fee</h2>
+
+        <!-- Form for creating fees -->
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="mb-4">
+                    <label 
+                        for="{{ field.id_for_label }}" 
+                        class="block text-sm font-medium text-[#22333C] mb-1">
+                        {{ field.label }}{% if field.field.required %} <span class="text-red-600">*</span>{% endif %}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ field.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <!-- Submit Button -->
+            <div>
+                <button 
+                    type="submit" 
+                    class="w-full bg-[#22333C] text-white py-2 px-4 rounded-lg hover:bg-[#22333C]/90 shadow-md">
+                    Save Fee
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

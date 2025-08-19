@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-[#6d6767]">
+  <div class="bg-[#1E1E1E] p-8 rounded shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-4 text-center text-[#FFFFFF]">Admin Login</h2>
+
+    <form method="POST" class="space-y-4">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="bg-[#F8D7DA] border border-[#F5C6CB] text-[#721C24] px-4 py-3 rounded relative" role="alert">
+        <strong class="font-bold">Error:</strong>
+        <span class="block sm:inline">{{ form.non_field_errors|join:" " }}</span>
+      </div>
+      {% endif %}
+
+      <div>
+        <label for="id_username" class="block text-sm font-medium text-[#A5A5A5]">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+        <div class="text-[#E3342F] text-sm mt-1">
+          {{ form.username.errors|join:", " }}
+        </div>
+        {% endif %}
+      </div>
+
+      <div>
+        <label for="id_password" class="block text-sm font-medium text-[#A5A5A5]">Password</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+        <div class="text-[#E3342F] text-sm mt-1">
+          {{ form.password.errors|join:", " }}
+        </div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="w-full bg-[#2E81EE] hover:bg-[#004FCC] text-[#FFFFFF] font-bold py-2 px-4 rounded">
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock content %}

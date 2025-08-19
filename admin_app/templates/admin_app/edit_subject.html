@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% load add_styles %}
+{% block content %}
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Edit Subject</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="mb-4">
+        <label for="id_name" class="block text-sm font-medium text-gray-700">Subject Name</label>
+        {{ form.name|add_styles:"w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600" }}
+      </div>
+
+      <div class="mb-4">
+        <label for="id_class_teacher" class="block text-sm font-medium text-gray-700">Subject Teacher</label>
+        {{ form.teachers|add_styles:"w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600" }}
+      </div>
+
+      <div class="mt-6">
+        <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">
+          Save Changes
+        </button>
+      </div>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+      <a href="{% url 'principal:admin_dashboard' %}" class="text-indigo-600 hover:text-indigo-500">Back to Dashboard</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

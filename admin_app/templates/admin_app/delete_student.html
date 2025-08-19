@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Confirmation Form for Deletion -->
+<form action="{% url 'principal:delete_student' student.pk %}" method="POST">
+    {% csrf_token %}
+  
+    <div class="bg-[#F8D7DA] border border-[#F5C6CB] text-[#721C24] p-4 rounded-md mb-4">
+        <p>Are you sure you want to delete <strong>{{ student.user.username }}</strong> permanently?</p>
+        <p>This action cannot be undone.</p>
+    </div>
+  
+    <button type="submit" class="bg-[#E3342F] text-[#FFFFFF] font-bold py-2 px-4 rounded hover:bg-[#C53030]">
+        Confirm Delete
+    </button>
+    
+    <a href="{% url 'principal:students_list' %}" class="bg-[#6B7280] text-[#FFFFFF] font-bold py-2 px-4 rounded hover:bg-[#4B5563] ml-4">
+        Cancel
+    </a>
+</form>
+
+{% endblock content %}

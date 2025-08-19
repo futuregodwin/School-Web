@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-[#121212]">
+    <div class="bg-[#1E1E1E] p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl font-bold text-[#FFFFFF] mb-4">Approve Student</h2>
+        
+        <p class="text-[#A5A5A5] mb-6">
+            Are you sure you want to approve student 
+            <strong class="text-[#FFFFFF]">{{ student.user.username }}</strong> 
+            and assign them a registration number?
+        </p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="flex items-center justify-between">
+                <button type="submit" 
+                        class="bg-[#2E81EE] hover:bg-[#004FCC] text-[#FFFFFF] font-bold py-2 px-4 rounded shadow">
+                    Approve
+                </button>
+                <a href="{% url 'principal:not_approved_student_list' %}" 
+                   class="text-[#A5A5A5] hover:text-[#FFFFFF] font-medium">
+                   Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

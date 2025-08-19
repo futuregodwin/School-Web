@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mx-auto py-8 bg-[#FEF3E9] text-[#22333C] font-sans">
+    <h1 class="text-3xl font-bold text-center mb-6 text-[#22333C]">
+        Teachers and Their Assigned Classes
+    </h1>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-[#C6AD8F] shadow-lg rounded-lg">
+            <thead>
+                <tr class="bg-[#C6AD8F] text-white">
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase">Teacher Name</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase">Assigned Class</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in teachers_with_classes %}
+                    <tr class="border-b border-[#EBE0D6] hover:bg-[#EBE0D6]">
+                        <td class="px-6 py-4 text-sm font-medium">{{ item.teacher.user.get_full_name }}</td>
+                        <td class="px-6 py-4 text-sm">
+                            {% if item.assigned_class %}
+                                {{ item.assigned_class.name }}{{ item.assigned_class.level }}
+                            {% else %}
+                                <span class="italic text-gray-500">No Class Assigned</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm flex">
+                            <a href="{% url 'principal:edit_teacher' item.teacher.id %}" class="text-blue-600 hover:underline">Edit</a> |
+                            <a href="{% url 'principal:delete_teacher' item.teacher.id %}" class="text-red-600 hover:underline">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center italic text-gray-500">
+                            No teachers found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if is_teacher %}
+        <div class="container mx-auto p-6">
+            <!-- Dashboard Header -->
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-[#22333C]">Teacher Dashboard</h2>
+                <a href="{% url 'teacher:logout' %}" class="bg-[#22333C] text-white px-4 py-2 rounded-lg hover:bg-[#1e2a33]">
+                    Logout
+                </a>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+                <div class="flex flex-col md:flex-row items-center">
+                    <!-- Profile Picture -->
+                    <div class="w-24 h-24 bg-gray-300 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6">
+                        {% if profile_picture %}
+                            <img src="{{ profile_picture }}" alt="Profile Picture" class="object-cover w-full h-full">
+                        {% else %}
+                            <img src="{% static 'images/default-profile.jpg' %}" alt="Default Profile Picture" class="object-cover w-full h-full">
+                        {% endif %}
+                    </div>
+                    <!-- Profile Information -->
+                    <div>
+                        <h3 class="capitalize text-xl font-semibold text-[#22333C]">{{ username|default:"Teacher Name" }}</h3>
+                        <p class="text-gray-600">
+                            Subjects: 
+                            {% for subject in subjects %}
+                                {{ subject.name|default:"N/A" }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        <a href="{% url 'teacher:edit_subject' teacher.id %}" class="inline-flex items-center text-[#22333C] mt-4">
+                            <svg height="24" viewBox="0 0 48 48" width="24" xmlns="http://www.w3.org/2000/svg" class="mr-2">
+                                <path d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+                                <path d="M0 0h48v48h-48z" fill="none"/>
+                            </svg>
+                            Edit Subjects
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Actions -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Take Attendance -->
+                <div class="bg-white shadow-lg rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-[#22333C] mb-4">Take Attendance</h3>
+                    <p class="text-gray-600 mb-4">Select a class to mark attendance:</p>
+                    <ul class="list-disc pl-6">
+                        {% for schoolclass in classes %}
+                            <li>
+                                <a href="{% url 'teacher:take_attendance' schoolclass.id %}" class="text-[#22333C] hover:text-[#1e2a33]">
+                                    Mark Attendance for {{ schoolclass.name }}{{ schoolclass.level }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Upload Results -->
+                <div class="bg-white shadow-lg rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-[#22333C] mb-4">Upload Results</h3>
+                    <p class="text-gray-600 mb-4">Record and upload students’ grades for your subjects.</p>
+                    <a href="{% url 'teacher:upload_results' %}" class="bg-[#22333C] text-white px-4 py-2 rounded-lg hover:bg-[#1e2a33]">
+                        Upload Results
+                    </a>
+                </div>
+
+                <!-- Make Announcement -->
+                <div class="bg-white shadow-lg rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-[#22333C] mb-4">Make Announcement</h3>
+                    <p class="text-gray-600 mb-4">Post an announcement for students</p>
+                    <a href="{#% url 'teacher:upload_results' %}#" class="bg-[#22333C] text-white px-4 py-2 rounded-lg hover:bg-[#1e2a33]">
+                        Make Announcement
+                    </a>
+                </div>
+
+                <!-- View Students -->
+                <div class="bg-white shadow-lg rounded-lg p-6 sm:col-span-2">
+                    <h3 class="text-lg font-semibold text-[#22333C] mb-4">Students in My Courses</h3>
+                    <table class="w-full table-auto border-collapse border border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-left text-sm font-medium text-gray-500">Student Name</th>
+                                <th class="px-4 py-2 text-left text-sm font-medium text-gray-500">Student ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                                <tr class="border-b">
+                                    <td class="px-4 py-2 text-[#22333C]">{{ student.user.username }}</td>
+                                    <td class="px-4 py-2 text-[#22333C]">{{ student.registration_number }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="2" class="px-4 py-2 text-center text-gray-500">No students found for this course.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-2xl text-red-700 border w-auto">Not allowed here</p>
+    {% endif %}
+{% else %}
+    <p class="text-2xl text-red-700 border w-auto">Login to View Dashboard</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+      {% if is_student %}
+        <div class="flex min-h-screen" style="background-color: #FEF3E9;">
+          
+          <!-- Sidebar -->
+          <aside class="w-64 bg-[#22333C] text-white flex flex-col">
+            <div class="p-6">
+              <h1 class="text-2xl font-bold">Dayspring Academy</h1>
+              <p class="text-sm mt-2 capitalize">Welcome, {{ username }}!</p>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+              <a href="{% url 'student:student_dashboard' %}" 
+                 class="block py-2 px-4 rounded-lg hover:bg-[#C6AD8F] hover:text-[#22333C] transition-transform transform hover:scale-105">
+                <svg class="inline w-5 h-5 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 12l9 8.25L21 12 12 3.75 3 12z"/></svg>
+                Dashboard
+              </a>
+              <a href="{% url 'student:Attendance' %}" 
+                 class="block py-2 px-4 rounded-lg hover:bg-[#C6AD8F] hover:text-[#22333C] transition-transform transform hover:scale-105">
+                <svg class="inline w-5 h-5 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+                Attendance
+              </a>
+              <a href="{% url 'student:view_subject' %}" 
+                 class="block py-2 px-4 rounded-lg hover:bg-[#C6AD8F] hover:text-[#22333C] transition-transform transform hover:scale-105">
+                <svg class="inline w-5 h-5 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 2h20v20H2V2z"/></svg>
+                Subjects
+              </a>
+              <a href="{% url 'student:view_results' %}" 
+                 class="block py-2 px-4 rounded-lg hover:bg-[#C6AD8F] hover:text-[#22333C] transition-transform transform hover:scale-105">
+                <svg class="inline w-5 h-5 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+                Results
+              </a>
+            </nav>
+            <div class="p-6 text-sm text-center border-t border-[#C6AD8F]">
+              <p>© 2024 Dayspring Academy</p>
+              <p>All rights reserved</p>
+            </div>
+          </aside>
+
+          <!-- Main Content -->
+          <main class="flex-1">
+            <header class="bg-[#C6AD8F] text-[#22333C] p-6 shadow">
+              <h1 class="text-xl font-bold">Student Dashboard</h1>
+            </header>
+
+            <section class="p-8 space-y-8">
+              <!-- Student Information Cards -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-4 bg-[#EBE0D6] text-[#22333C] rounded-lg shadow-md">
+                  <h3 class="text-lg font-semibold">Name</h3>
+                  <p class="capitalize">{{ username }}</p>
+                </div>
+                <div class="p-4 bg-[#EBE0D6] text-[#22333C] rounded-lg shadow-md">
+                  <h3 class="text-lg font-semibold">Contact</h3>
+                  <p>{{ contact }}</p>
+                </div>
+                <div class="p-4 bg-[#EBE0D6] text-[#22333C] rounded-lg shadow-md">
+                  <h3 class="text-lg font-semibold">Fee</h3>
+                  <p>&#8358;{{ fees }}</p>
+                </div>
+              </div>
+
+              <!-- Notice Board Section -->
+              <div class="bg-[#EBE0D6] shadow-md rounded-md">
+                <div class="bg-[#C6AD8F] text-[#22333C] p-4 rounded-t-md">
+                  <h2 class="text-lg font-semibold text-center">Notice Board</h2>
+                </div>
+                <div class="p-4 space-y-4">
+                  {% if announcements %}
+                    {% for announcement in announcements %}
+                      <div class="p-4 bg-white text-[#22333C] rounded-lg shadow">
+                        <p class="text-sm text-gray-500">Posted on: {{ announcement.date }}</p>
+                        <p class="text-sm text-gray-500">By: {{ announcement.author }}</p>
+                        <p class="mt-2">{{ announcement.text }}</p>
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <p class="text-center text-gray-600">No announcements available.</p>
+                  {% endif %}
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+      {% else %}
+        <div class="flex justify-center items-center min-h-screen" style="background-color: #FEF3E9;">
+          <p class="text-red-700 text-xl font-bold border p-4 rounded">Not allowed here.</p>
+        </div>
+      {% endif %}
+  {% else %}
+    <div class="flex justify-center items-center min-h-screen" style="background-color: #FEF3E9;">
+      <p class="text-red-700 text-xl font-bold border p-4 rounded">Please log in to view your dashboard.</p>
+    </div>
+  {% endif %}
+{% endblock %}

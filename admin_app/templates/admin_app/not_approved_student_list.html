@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-[#1F2937]">Unapproved Students List</h2>
+        <a href="{% url 'principal:admin_dashboard' %}" class="flex items-center bg-[#3B82F6] text-white px-4 py-2 rounded-lg hover:bg-[#2563EB] transition duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+            Home
+        </a>
+    </div>
+
+    {% if not_admitted_students %}
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <table class="w-full">
+            <thead class="bg-[#F3F4F6] border-b">
+                <tr>
+                    <th class="p-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider">Name</th>
+                    <th class="p-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider">Class</th>
+                    <th class="p-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider">Payment Proof</th>
+                    <th class="p-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-[#D1D5DB]">
+                {% for student in not_admitted_students %}
+                <tr class="hover:bg-[#F9FAFB] transition duration-150">
+                    <td class="p-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="ml-2">
+                                <div class="text-sm font-medium text-[#1F2937]">{{ student.user.get_full_name|default:student.user.username }}</div>
+                                <div class="text-sm text-[#6B7280]">{{ student.user.email }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-3 whitespace-nowrap text-sm text-[#6B7280]">
+                        {{ student.student_class }}
+                    </td>
+                    <td class="p-3 whitespace-nowrap text-sm text-[#6B7280]">
+                        {{ student.payment_proof|default:"Not Uploaded" }}
+                    </td>
+                    <td class="p-3 whitespace-nowrap text-sm font-medium">
+                        <a href="{% url 'principal:delete_student' student.id %}" class="text-[#EF4444] hover:text-[#B91C1C] mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                            Delete
+                        </a>
+                        <a href="{% url 'principal:approve_student' student.id %}" class="text-[#10B981] hover:text-[#047857]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Approve
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="bg-white shadow-md rounded-lg p-6 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[#9CA3AF] mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+        </svg>
+        <p class="text-[#4B5563] text-lg">No unapproved students at the moment</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

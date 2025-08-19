@@ -1,0 +1,22 @@
+{% if request.user.is_authenticated %}
+<footer class="bg-gray-900 text-white py-4 mt-8">
+    <div class="container mx-auto items-center space-y-4">
+        <!-- Menu Links -->
+        <nav class="space-y-2 text-center">
+            <a href="{% url 'student:home' %}" class="block text-lg hover:underline">Home</a>
+            <a href="#" class="block text-lg hover:underline">Admin</a>
+            <a href="#" class="block text-lg hover:underline">Teacher</a>
+            <a href="{% url 'student:student_login' %}" class="block text-lg hover:underline">Student</a>
+            <a href="{% url 'student:admission_form' %}" class="block text-lg hover:underline">Admission</a>
+        </nav>
+
+        <!-- Divider -->
+        <div class="w-full border-t border-gray-700"></div>
+
+        <!-- Copyright -->
+        <div class="text-center text-sm">
+            <p>Copyright © 2024 Dayspring Academy. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{% endif %}

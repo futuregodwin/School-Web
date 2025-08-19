@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load add_class %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen bg-[#FEF3E9]">
+  <div class="w-full max-w-lg">
+    <h2 class="text-lg font-semibold text-center text-[#22333C] mb-6">Apply for Admission</h2>
+    
+    <form method="post" enctype="multipart/form-data" class="space-y-12 bg-white p-8 rounded-lg shadow-lg">
+      {% csrf_token %}
+
+      <!-- Account Information Section -->
+      <div class="border-b border-[#C6AD8F] pb-12">
+        <h3 class="text-lg font-semibold text-[#22333C]">Account Information</h3>
+        
+        {% for field in user_form %}
+          <div class="mb-4">
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-[#22333C]">{{ field.label }}</label>
+            {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
+              <!-- Smaller styling for radio and checkbox inputs -->
+              {{ field|add_class:"w-4 h-4 text-[#22333C] border-gray-300 focus:ring-[#C6AD8F]" }}
+            {% else %}
+              {{ field|add_class:"mt-2 w-full rounded-md border-[#C6AD8F] shadow-sm focus:border-[#C6AD8F] focus:ring-[#C6AD8F]" }}
+            {% endif %}
+            {% if field.help_text %}
+              <p class="mt-1 text-xs text-[#EBE0D6]">{{ field.help_text }}</p>
+            {% endif %}
+            {% for error in field.errors %}
+              <p class="text-red-600 text-sm">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Admission Information Section -->
+      <div class="border-b border-[#C6AD8F] pb-12">
+        <h3 class="text-lg font-semibold text-[#22333C]">Admission Information</h3>
+        <p class="mt-1 text-sm text-[#22333C]">Use your actual information for admission.</p>
+        
+        {% for field in admission_form %}
+          <div class="mb-4">
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-[#22333C]">{{ field.label }}</label>
+            {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
+              {{ field|add_class:"w-4 h-4 text-[#22333C] border-gray-300 focus:ring-[#C6AD8F]" }}
+            {% else %}
+              {{ field|add_class:"mt-2 w-full rounded-md border-[#C6AD8F] shadow-sm focus:border-[#C6AD8F] focus:ring-[#C6AD8F]" }}
+            {% endif %}
+            {% if field.help_text %}
+              <p class="mt-1 text-xs text-[#EBE0D6]">{{ field.help_text }}</p>
+            {% endif %}
+            {% for error in field.errors %}
+              <p class="text-red-600 text-sm">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mt-6">
+        <button type="submit" class="w-full rounded-md bg-[#22333C] px-4 py-2 text-white shadow-sm hover:bg-[#C6AD8F]">Submit Admission Application</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

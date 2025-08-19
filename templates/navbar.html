@@ -1,0 +1,60 @@
+{% load static %}
+{% load tailwind_tags %}
+
+<header class="body-font bg-[#121212]">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
+        <!-- Logo -->
+        <a href="{% url 'student:home' %}" class="flex title-font font-medium items-center text-[#FFFFFF] mb-4 md:mb-0 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" 
+                 stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-[#2E81EE] rounded-full" 
+                 viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span class="ml-3 text-xl">Dayspring Academy</span>
+        </a>
+
+        <!-- Navigation -->
+        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-end">
+            <!-- Home -->
+            <a href="{% url 'student:home' %}" 
+               class="{% if request.path == '/' %}bg-[#2E81EE] text-[#FFFFFF] px-5 py-2 rounded-lg hover:bg-[#004FCC]{% else %}text-[#A5A5A5] hover:text-[#FFFFFF]{% endif %} mr-5">
+               Home
+            </a>
+
+            <!-- Admission -->
+            <a href="{% url 'student:admission_form' %}" 
+               class="{% if request.path == '/admission_form/' %}bg-[#2E81EE] text-[#FFFFFF] px-5 py-2 rounded-lg hover:bg-[#004FCC]{% else %}text-[#A5A5A5] hover:text-[#FFFFFF]{% endif %} mr-5">
+               Admission
+            </a>
+
+            <!-- Teacher -->
+            {% url 'teacher:sign_up' as sign_up_url %}
+            <a href="{{ sign_up_url }}" 
+               class="{% if request.path == sign_up_url %}bg-[#2E81EE] text-[#FFFFFF] px-5 py-2 rounded-lg hover:bg-[#004FCC]{% else %}text-[#A5A5A5] hover:text-[#FFFFFF]{% endif %} mr-5">
+               Teacher
+            </a>
+
+            <!-- Admin -->
+            {% url 'principal:login_admin' as admin_login_url %}
+            <a href="{{ admin_login_url }}" 
+               class="{% if request.path == admin_login_url %}bg-[#2E81EE] text-[#FFFFFF] px-5 py-2 rounded-lg hover:bg-[#004FCC]{% else %}text-[#A5A5A5] hover:text-[#FFFFFF]{% endif %} mr-5">
+               Admin
+            </a>
+
+            <!-- Student Login -->
+            <a href="{% url 'student:student_login' %}" 
+               class="{% if request.path == '/student_login/' %}bg-[#2E81EE] text-[#FFFFFF] px-5 py-2 rounded-lg hover:bg-[#004FCC]{% else %}text-[#A5A5A5] hover:text-[#FFFFFF]{% endif %} mr-5">
+               Student
+            </a>
+
+            <!-- Logout (for authenticated students only) -->
+            {% if request.user.is_authenticated and request.user.student %}
+            <a href="{% url 'student:logout' %}" 
+               class="bg-[#FF3B30] text-[#FFFFFF] px-4 py-2 rounded-lg hover:bg-[#CC2A22]">
+               Logout
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+<hr>

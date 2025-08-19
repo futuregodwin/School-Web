@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% load add_styles %}
+
+<div class="container mx-auto p-8">
+    <h2 class="text-2xl font-bold mb-4 text-[#1F2937]">Edit Student</h2>
+
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        
+        <!-- Loop over each field in the form -->
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-[#4B5563]">
+                    {{ field.label }}
+                </label>
+                {{ field|add_styles:"mt-1 block w-full px-3 py-2 bg-white border border-[#D1D5DB] rounded-md shadow-sm focus:outline-none focus:ring-[#4F46E5] focus:border-[#4F46E5] sm:text-sm" }}
+            </div>
+        {% endfor %}
+        
+        <!-- Submit Button -->
+        <div>
+            <button type="submit" class="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold py-2 px-4 rounded">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

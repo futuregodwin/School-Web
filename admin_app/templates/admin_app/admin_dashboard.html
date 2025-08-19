@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="flex min-h-screen" style="background-color: #FEF3E9;">
+    <!-- Sidebar -->
+    <div class="bg-[#22333C] w-64 text-white p-4">
+        <h1 class="text-2xl font-bold mb-4">School Admin</h1>
+        <nav>
+            <ul>
+                <li class="mb-2">
+                    <a href="{% url 'principal:admin_dashboard' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-home mr-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:students_list' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-user-graduate mr-2"></i> Students
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:teachers_list' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-chalkboard-teacher mr-2"></i> Teachers
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:subjects_list' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-book mr-2"></i> Courses
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:fees_list' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-coins mr-2"></i> Finance
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:not_approved_student_list' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-coins mr-2"></i> Pending Students
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:not_approved_teachers_list' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-coins mr-2"></i> Pending Teachers
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:class_list' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-cog mr-2"></i> Class
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:approve_results' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-cog mr-2"></i> Approve Results
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'principal:admin_logout' %}" class="p-2 hover:bg-[#C6AD8F] hover:text-[#22333C] text-left font-medium flex items-center rounded">
+                        <i class="fas fa-coins mr-2"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-8">
+        <h2 class="text-2xl font-bold mb-4 text-[#22333C]">Dashboard Overview</h2>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-[#EBE0D6] p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-2 text-[#22333C]">Total Students</h3>
+                <p class="text-[#22333C] text-2xl font-bold">{{ total_students }}</p>
+            </div>
+            <div class="bg-[#EBE0D6] p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-2 text-[#22333C]">Total Teachers</h3>
+                <p class="text-[#22333C] text-2xl font-bold">{{ total_teachers }}</p>
+            </div>
+            <div class="bg-[#EBE0D6] p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-2 text-[#22333C]">Total Courses</h3>
+                <p class="text-[#22333C] text-2xl font-bold">{{ total_courses }}</p>
+            </div>
+            <div class="bg-[#EBE0D6] p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-2 text-[#22333C]">Pending Student Approvals</h3>
+                <p class="text-red-600 text-2xl font-bold">{{ pending_students }}</p>
+            </div>
+            <div class="bg-[#EBE0D6] p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-2 text-[#22333C]">Pending Teacher Signups</h3>
+                <p class="text-red-600 text-2xl font-bold">{{ pending_teachers }}</p>
+            </div>
+            <div class="bg-[#EBE0D6] p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-2 text-[#22333C]">Pending Result Approvals</h3>
+                <p class="text-red-600 text-2xl font-bold">{{ pending_results }}</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-[#EBE0D6] p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-2 text-[#22333C]">Student Enrollment</h3>
+                <canvas id="studentEnrollmentChart"></canvas>
+            </div>
+            <div class="bg-[#EBE0D6] p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-2 text-[#22333C]">Financial Overview</h3>
+                <canvas id="financialOverviewChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const enrollmentCtx = document.getElementById('studentEnrollmentChart').getContext('2d');
+    new Chart(enrollmentCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ enrollment_chart.labels|safe }},
+            datasets: [{
+                label: 'Enrollments',
+                data: {{ enrollment_chart.values|safe }},
+                backgroundColor: '#C6AD8F',
+            }]
+        }
+    });
+
+    const financialCtx = document.getElementById('financialOverviewChart').getContext('2d');
+    new Chart(financialCtx, {
+        type: 'line',
+        data: {
+            labels: {{ financial_chart.labels|safe }},
+            datasets: [{
+                label: 'Earnings',
+                data: {{ financial_chart.values|safe }},
+                borderColor: '#C6AD8F',
+                fill: false,
+            }]
+        }
+    });
+</script>
+{% endblock content %}

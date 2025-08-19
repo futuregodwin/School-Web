@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% load add_style %}
+
+{% block content %}
+<div class="p-6 bg-white shadow-lg rounded-lg max-w-2xl mx-auto mt-8">
+    <button onclick="window.history.back()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+        <?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+        <svg height="16px" id="Layer_1" style="enable-background:new 0 0 16 16;" version="1.1" viewBox="0 0 16 16" width="16px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M15,6H8V3c0-0.484-0.375-1-1-1C6.539,2,6.305,2.287,6,2.54L0.625,7C0.242,7.313,0,7.555,0,8s0.242,0.688,0.625,1L6,13.46  C6.305,13.713,6.539,14,7,14c0.625,0,1-0.516,1-1v-3h7c0.55,0,1-0.45,1-1V7C16,6.45,15.55,6,15,6z"/></svg>
+    </button>
+    <!-- Header -->
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">
+        Mark Attendance for {{ selected_class.name }}{{ selected_class.level }}
+    </h1>
+
+    <!-- Form -->
+    <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        
+        <!-- Date Selection -->
+        <div>
+            <label for="id_date" class="block text-sm font-medium text-gray-600 mb-1">Select Date:</label>
+            {{ form.date|add_style:"w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200" }}
+        </div>
+        
+        <!-- Students Section -->
+        <div>
+            <h2 class="text-lg font-medium text-gray-700 mb-4">Students:</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {% for field in form %}
+                    {% if field.name != "date" %}
+                        <div class="flex items-center bg-gray-50 border border-gray-200 rounded-lg p-3 shadow-sm">
+                            <input type="checkbox" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="mr-3">
+                            <label for="{{ field.id_for_label }}" class="text-gray-800">{{ field.label }}</label>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:ring focus:ring-green-300">
+                Submit Attendance
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

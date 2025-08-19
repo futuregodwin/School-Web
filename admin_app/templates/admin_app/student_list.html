@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mx-auto p-4 bg-[#FEF3E9]">
+    <button onclick="window.history.back()" class="bg-[#22333C] text-white px-4 py-2 rounded-lg hover:bg-[#C6AD8F]">
+        <?xml version="1.0" ?><!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+        <svg height="16px" id="Layer_1" style="enable-background:new 0 0 16 16;" version="1.1" viewBox="0 0 16 16" width="16px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path d="M15,6H8V3c0-0.484-0.375-1-1-1C6.539,2,6.305,2.287,6,2.54L0.625,7C0.242,7.313,0,7.555,0,8s0.242,0.688,0.625,1L6,13.46C6.305,13.713,6.539,14,7,14c0.625,0,1-0.516,1-1v-3h7c0.55,0,1-0.45,1-1V7C16,6.45,15.55,6,15,6z"/>
+        </svg>
+    </button>
+    <h2 class="text-2xl font-bold mb-4 text-[#22333C]">Students List</h2>
+
+    <a href="{% url 'student:admission_form' %}" class="bg-[#22333C] hover:bg-[#C6AD8F] text-white font-bold py-2 px-4 rounded mb-4">
+        Add New Student
+    </a>    
+    
+    <table class="w-full border-collapse border border-[#C6AD8F]">
+        <thead class="bg-[#EBE0D6]">
+            <tr>
+                <th class="border border-[#C6AD8F] p-2 text-[#22333C]">Name</th>
+                <th class="border border-[#C6AD8F] p-2 text-[#22333C]">Reg_no</th>
+                <th class="border border-[#C6AD8F] p-2 text-[#22333C]">Class</th>
+                <th class="border border-[#C6AD8F] p-2 text-[#22333C]">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr class="hover:bg-[#EBE0D6] transition duration-150">
+                <td class="border border-[#C6AD8F] p-2 text-[#22333C]">{{ student.user.username }}</td>
+                <td class="border border-[#C6AD8F] p-2 text-[#22333C]">{{ student.registration_number }}</td>
+                <td class="border border-[#C6AD8F] p-2 text-[#22333C]">{{ student.student_class }}</td>
+                <td class="border border-[#C6AD8F] p-2 text-[#22333C]">
+                    <a href="{% url 'principal:edit_student' student.id %}" class="text-[#C6AD8F] hover:underline">Edit</a> |
+                    <a href="{% url 'principal:delete_student' student.id %}" class="text-red-500 hover:underline">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}

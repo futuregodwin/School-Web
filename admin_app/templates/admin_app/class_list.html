@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mx-auto p-6 bg-[#FEF3E9] min-h-screen">
+    <!-- Back Button -->
+    <div class="mb-4">
+        <button 
+            onclick="window.history.back()" 
+            class="flex items-center space-x-2 bg-[#C6AD8F] text-white px-4 py-2 rounded-lg hover:bg-[#C6AD8F]/90 focus:outline-none shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back</span>
+        </button>
+    </div>
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-[#22333C]">Class List</h2>
+        <a href="{% url 'principal:create_class' %}" 
+           class="bg-[#22333C] hover:bg-[#22333C]/90 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none">
+            Add New Class
+        </a>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-[#EBE0D6]">
+                <tr>
+                    <th class="border-b border-[#C6AD8F] p-4 font-semibold text-[#22333C]">Name</th>
+                    <th class="border-b border-[#C6AD8F] p-4 font-semibold text-[#22333C]">Teacher</th>
+                    <th class="border-b border-[#C6AD8F] p-4 font-semibold text-[#22333C]">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class in classes %}
+                <tr class="hover:bg-[#EBE0D6]/50">
+                    <td class="border-b border-[#C6AD8F] p-4 text-[#22333C]">{{ class.name }} {{ class.level }}</td>
+                    <td class="border-b border-[#C6AD8F] p-4 text-[#22333C]">{{ class.class_teacher }}</td>
+                    <td class="border-b border-[#C6AD8F] p-4">
+                        <div class="flex space-x-4">
+                            <a href="{% url 'principal:edit_class' class.id %}" 
+                               class="text-[#22333C] hover:text-[#C6AD8F] font-medium focus:outline-none">
+                                Edit
+                            </a>
+                            <a href="{% url 'principal:delete_class' class.id %}" 
+                               class="text-red-600 hover:text-red-800 font-medium focus:outline-none">
+                                Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center text-gray-500 p-4">
+                        No classes available.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
