@@ -10,7 +10,7 @@ urlpatterns = [
     path('', include('students_app.urls', namespace="student")),
     path('admin_app/', include('admin_app.urls', namespace="principal")),
     path('teachers/', include('teachers_app.urls', namespace="teacher")),
-    path("__reload__/", include("django_browser_reload.urls")),
+    # path("__reload__/", include("django_browser_reload.urls")),
 ]
 
 
